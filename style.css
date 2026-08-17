@@ -4,7 +4,7 @@ Theme URI: https://sarkarhost.com/
 Author: Sarkar Host Team
 Author URI: https://sarkarhost.com/
 Description: Premium Modern IT, SEO, Web Development, Hosting & Digital Marketing WordPress Theme inspired by Aleric IT Consulting.
-Version: 1.0.0
+Version: 1.2.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: sarkarhost
@@ -2074,29 +2074,27 @@ body.mobile-nav-open {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS (v1.2.0)
    ========================================================================== */
 @media (max-width: 1024px) {
-    .hero-title { font-size: 2.8rem; }
-    .inner-page-banner .page-title { font-size: 2.4rem; }
-    .footer-top-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .hero-title { font-size: 2.6rem; }
+    .inner-page-banner .page-title { font-size: 2.2rem; }
+    .footer-top-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
     .contact-page-wrapper { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 991px) {
+    /* Container & Layout */
+    .container { padding: 0 1.15rem; }
+    .section-padding, section.py-5 { padding: 2.75rem 0; }
+
     .top-announcement-right { display: none; }
-    .top-announcement-left { width: 100%; justify-content: space-between; }
-    .main-site-logo { height: 38px; }
-    .hero-title { font-size: 2.2rem; }
-    .inner-page-banner .page-title { font-size: 2rem; }
-    .hero-subtitle { font-size: 1rem; }
-    .hero-metrics { gap: 1.5rem; padding: 1.25rem; }
-    .metric-divider { display: none; }
-    .section-title { font-size: 2rem; }
-    .cta-title { font-size: 2rem; }
+    .top-announcement-left { width: 100%; justify-content: space-between; font-size: 0.8rem; }
+    .main-site-logo { height: 36px; }
     .d-none-mobile { display: none !important; }
     
     /* Clean Mobile Top Header: Logo on Left, Menu Toggle on Right */
+    .site-header { padding: 0.75rem 0; }
     .site-header .header-container {
         display: flex;
         justify-content: space-between;
@@ -2114,20 +2112,20 @@ body.mobile-nav-open {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 44px;
-        height: 44px;
+        width: 42px;
+        height: 42px;
         border-radius: var(--radius-sm);
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--border-color);
         color: var(--text-white);
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition: var(--transition);
     }
 
     .mobile-menu-toggle:hover,
     .mobile-menu-toggle:active {
-        background: rgba(196, 238, 24, 0.1);
+        background: rgba(196, 238, 24, 0.12);
         border-color: var(--accent-lime);
         color: var(--accent-lime);
     }
@@ -2138,14 +2136,14 @@ body.mobile-nav-open {
         top: 0;
         right: -100%;
         width: 88%;
-        max-width: 360px;
+        max-width: 350px;
         height: 100vh;
         height: 100dvh;
         background: rgba(9, 11, 20, 0.98);
         backdrop-filter: blur(25px);
         -webkit-backdrop-filter: blur(25px);
         border-left: 1px solid var(--border-color);
-        padding: 1.5rem 1.25rem 2rem;
+        padding: 1.25rem 1.15rem 1.75rem;
         overflow-y: auto;
         z-index: 99999;
         transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2169,8 +2167,8 @@ body.mobile-nav-open {
         display: flex !important;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.85rem;
         border-bottom: 1px solid var(--border-color);
     }
 
@@ -2181,7 +2179,7 @@ body.mobile-nav-open {
 
     .drawer-logo-main {
         font-weight: 800;
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         color: var(--text-white);
         letter-spacing: -0.5px;
         line-height: 1.1;
@@ -2192,15 +2190,15 @@ body.mobile-nav-open {
     }
 
     .drawer-logo-sub {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
         color: var(--text-dim);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     .drawer-close-btn {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--border-color);
@@ -2208,7 +2206,7 @@ body.mobile-nav-open {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
+        font-size: 0.95rem;
         cursor: pointer;
         transition: var(--transition);
     }
@@ -2221,21 +2219,21 @@ body.mobile-nav-open {
 
     /* Mobile Navigation List */
     .nav-menu-links-wrap {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
     }
 
     .nav-menu ul.main-nav-list,
     .nav-menu ul {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.35rem;
+        gap: 0.25rem;
         width: 100%;
     }
 
     .nav-menu li {
         width: 100%;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        padding-bottom: 0.35rem;
+        padding-bottom: 0.3rem;
     }
 
     .nav-item-flex {
@@ -2246,12 +2244,12 @@ body.mobile-nav-open {
     }
 
     .nav-menu a {
-        padding: 0.65rem 0.5rem;
+        padding: 0.55rem 0.4rem;
         width: 100%;
-        font-size: 1rem;
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        gap: 0.65rem;
+        gap: 0.55rem;
     }
 
     .nav-menu a::after {
@@ -2270,8 +2268,8 @@ body.mobile-nav-open {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: var(--radius-sm);
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--border-color);
@@ -2290,7 +2288,7 @@ body.mobile-nav-open {
 
     .mobile-submenu-toggle i {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .submenu-open .mobile-submenu-toggle i {
@@ -2311,46 +2309,46 @@ body.mobile-nav-open {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: var(--radius-sm);
-        margin: 0.3rem 0;
-        padding: 0 0.5rem;
+        margin: 0.25rem 0;
+        padding: 0 0.4rem;
         min-width: unset;
         width: 100%;
     }
 
     .has-dropdown.submenu-open .dropdown-menu,
     .menu-item-has-children.submenu-open .sub-menu {
-        padding: 0.5rem;
+        padding: 0.4rem;
     }
 
     .dropdown-menu a {
-        padding: 0.6rem 0.5rem;
-        font-size: 0.9rem;
+        padding: 0.5rem 0.4rem;
+        font-size: 0.85rem;
     }
 
     .dropdown-menu .sub-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.85rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
     }
 
     /* Mobile Drawer Actions & Contact Box */
     .mobile-nav-actions {
         display: flex !important;
         flex-direction: column;
-        gap: 0.65rem;
-        margin-top: 1rem;
-        padding-top: 1.25rem;
+        gap: 0.55rem;
+        margin-top: 0.75rem;
+        padding-top: 1rem;
         border-top: 1px solid var(--border-color);
     }
 
     .mobile-drawer-cta {
-        font-size: 0.95rem;
-        padding: 0.85rem 1rem;
+        font-size: 0.92rem;
+        padding: 0.75rem 1rem;
         border-radius: var(--radius-sm);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.45rem;
         font-weight: 700;
         box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
     }
@@ -2358,16 +2356,16 @@ body.mobile-nav-open {
     .mobile-action-buttons-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
+        gap: 0.45rem;
     }
 
     .mobile-action-buttons-grid .btn {
-        padding: 0.7rem 0.5rem;
-        font-size: 0.82rem;
+        padding: 0.65rem 0.45rem;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.35rem;
+        gap: 0.3rem;
     }
 
     .btn-wa-drawer {
@@ -2387,18 +2385,18 @@ body.mobile-nav-open {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: var(--radius-sm);
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 0.85rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-        margin-top: 0.35rem;
+        gap: 0.4rem;
+        margin-top: 0.25rem;
     }
 
     .drawer-info-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 0.8rem;
+        gap: 0.45rem;
+        font-size: 0.78rem;
         color: #94a3b8;
     }
 
@@ -2413,9 +2411,273 @@ body.mobile-nav-open {
         font-weight: 600;
     }
 
-    .overview-grid, .services-grid, .process-grid, .offices-grid { grid-template-columns: 1fr; }
-    .footer-top-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .contact-strip { flex-direction: column; align-items: flex-start; padding: 1.5rem; }
+    /* Grids & Cards Optimized for Mobile */
+    .overview-grid, .services-grid, .process-grid, .offices-grid, .features-grid, .testimonials-grid { 
+        grid-template-columns: 1fr; 
+        gap: 1.15rem;
+    }
+
+    .footer-top-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-strip { flex-direction: column; align-items: flex-start; padding: 1.25rem; }
     .contact-strip-item { width: 100%; }
     .strip-divider { display: none; }
+}
+
+/* Specific Tablet & Mobile Sizing (<= 768px) */
+@media (max-width: 768px) {
+    /* Section & Container Paddings */
+    .section-padding, section.py-5 { padding: 2.25rem 0; }
+
+    /* Hero Section */
+    .hero-section {
+        padding: 2.75rem 0 1.75rem;
+    }
+
+    .hero-badge {
+        font-size: 0.76rem;
+        padding: 0.32rem 0.9rem;
+        margin-bottom: 0.85rem;
+        gap: 0.4rem;
+    }
+
+    .hero-title {
+        font-size: 1.85rem;
+        line-height: 1.28;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.25rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.65rem;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .hero-metrics {
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+        margin-top: 1.35rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .metric-number {
+        font-size: 1.45rem;
+    }
+
+    .metric-label {
+        font-size: 0.75rem;
+    }
+
+    /* Inner Page Banner */
+    .inner-page-banner {
+        padding: 2.25rem 0 1.75rem;
+    }
+
+    .inner-page-banner .page-title {
+        font-size: 1.75rem;
+        line-height: 1.28;
+        margin-bottom: 0.5rem;
+    }
+
+    .inner-page-banner .page-desc {
+        font-size: 0.88rem;
+        line-height: 1.55;
+        margin-bottom: 1rem;
+    }
+
+    .breadcrumbs {
+        font-size: 0.78rem;
+        padding: 0.3rem 0.85rem;
+    }
+
+    /* Section Headings */
+    .section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-badge {
+        font-size: 0.75rem;
+        padding: 0.28rem 0.75rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+        font-size: 1.55rem;
+        line-height: 1.32;
+        margin-bottom: 0.4rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.88rem;
+        line-height: 1.55;
+    }
+
+    .cta-title {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        margin-bottom: 0.45rem;
+    }
+
+    .cta-subtitle {
+        font-size: 0.88rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .cta-card {
+        padding: 1.75rem 1.15rem;
+        border-radius: var(--radius-md);
+    }
+
+    /* Cards & Components */
+    .service-card, 
+    .feature-card, 
+    .process-step, 
+    .why-card, 
+    .testimonial-card, 
+    .office-card {
+        padding: 1.2rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .service-card h3, 
+    .feature-card h3, 
+    .process-step h3, 
+    .why-card h3, 
+    .office-card h3 {
+        font-size: 1.12rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .service-card p, 
+    .feature-card p, 
+    .process-step p, 
+    .why-card p, 
+    .testimonial-card p {
+        font-size: 0.85rem;
+        line-height: 1.55;
+    }
+
+    .service-icon-wrap, 
+    .why-icon-wrap {
+        width: 44px;
+        height: 44px;
+        font-size: 1.15rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .pricing-card {
+        padding: 1.5rem 1.15rem;
+    }
+
+    .pricing-price .amount {
+        font-size: 1.8rem;
+    }
+
+    .pricing-features li {
+        font-size: 0.84rem;
+        padding: 0.4rem 0;
+    }
+
+    /* Contact Page & Forms */
+    .contact-page-wrapper {
+        gap: 1.25rem;
+    }
+
+    .contact-form-box {
+        padding: 1.35rem 1.15rem;
+        border-radius: var(--radius-md);
+    }
+
+    .form-group {
+        margin-bottom: 0.85rem;
+    }
+
+    .form-group label {
+        font-size: 0.82rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .form-group input, 
+    .form-group textarea, 
+    .form-group select {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.88rem;
+    }
+
+    /* Modal Dialog */
+    .modal-card {
+        padding: 1.35rem 1.15rem;
+        width: 92%;
+        max-width: 400px;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .modal-subtitle {
+        font-size: 0.82rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    .site-footer {
+        padding: 2.25rem 0 1.5rem;
+    }
+
+    .footer-col h4 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-bottom {
+        padding-top: 1.25rem;
+        margin-top: 1.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Small Mobile Screen Optimization (<= 480px) */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.65rem;
+        letter-spacing: -0.3px;
+    }
+
+    .section-title {
+        font-size: 1.42rem;
+    }
+
+    .inner-page-banner .page-title {
+        font-size: 1.55rem;
+    }
+
+    .cta-title {
+        font-size: 1.38rem;
+    }
+
+    .hero-metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+        text-align: center;
+    }
+
+    .metric-number {
+        font-size: 1.35rem;
+    }
 }

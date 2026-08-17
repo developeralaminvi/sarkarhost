@@ -72,7 +72,7 @@ function sarkarhost_enqueue_assets() {
         'sarkarhost-style',
         get_stylesheet_uri(),
         ['font-awesome-6'],
-        '1.0.0'
+        '1.2.0'
     );
 
     // Main Theme JavaScript
@@ -80,7 +80,7 @@ function sarkarhost_enqueue_assets() {
         'sarkarhost-script',
         get_template_directory_uri() . '/assets/js/theme-script.js',
         [],
-        '1.0.0',
+        '1.2.0',
         true
     );
 
