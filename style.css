@@ -254,9 +254,10 @@ img {
 .site-header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10000;
     background: rgba(9, 10, 16, 0.92);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-color);
     transition: var(--transition);
 }
@@ -2155,7 +2156,7 @@ body.mobile-nav-open {
         border-left: 1px solid var(--border-color);
         padding: 1.25rem 1.15rem 1.75rem;
         overflow-y: auto;
-        z-index: 99999;
+        z-index: 10005;
         transform: translateX(105%);
         visibility: hidden;
         pointer-events: none;
@@ -2170,7 +2171,7 @@ body.mobile-nav-open {
         pointer-events: auto;
     }
 
-    /* Backdrop Blur Overlay */
+    /* Backdrop Blur Overlay (Sits behind the header & drawer) */
     .mobile-nav-overlay {
         position: fixed;
         inset: 0;
@@ -2179,7 +2180,7 @@ body.mobile-nav-open {
         background: rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
-        z-index: 99998;
+        z-index: 9990;
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
