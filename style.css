@@ -63,6 +63,9 @@ Tags: one-column, custom-colors, custom-menu, custom-logo, featured-images, full
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
 }
 
 body {
@@ -71,7 +74,14 @@ body {
     font-family: var(--font-main);
     line-height: 1.65;
     overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
     -webkit-font-smoothing: antialiased;
+}
+
+body.mobile-nav-open {
+    overflow: hidden !important;
 }
 
 a {
@@ -2130,11 +2140,11 @@ body.mobile-nav-open {
         color: var(--accent-lime);
     }
 
-    /* Modern Sliding Mobile Drawer */
+    /* Modern Sliding Mobile Drawer (No Horizontal Scrollbar) */
     .nav-menu {
         position: fixed;
         top: 0;
-        right: -100%;
+        right: 0;
         width: 88%;
         max-width: 350px;
         height: 100vh;
@@ -2146,13 +2156,40 @@ body.mobile-nav-open {
         padding: 1.25rem 1.15rem 1.75rem;
         overflow-y: auto;
         z-index: 99999;
-        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(105%);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s;
         box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
         display: block;
     }
 
     .nav-menu.active {
-        right: 0;
+        transform: translateX(0);
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* Backdrop Blur Overlay */
+    .mobile-nav-overlay {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 99998;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .mobile-nav-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
     }
 
     .nav-menu-inner {
