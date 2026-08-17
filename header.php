@@ -22,8 +22,8 @@ $wa = sarkarhost_get_opt('sarkarhost_whatsapp', '8801321222308');
 <div class="top-announcement-bar">
     <div class="container d-flex justify-between align-center">
         <div class="top-announcement-left">
-            <span class="badge-pulse"><span class="pulse-dot"></span> 24/7 সাপোর্ট সার্ভিস চালু আছে</span>
-            <span class="top-phone"><i class="fa-solid fa-phone"></i> সরাসরি কথা বলুন: <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>"><?php echo esc_html($phone); ?></a></span>
+            <span class="badge-pulse"><span class="pulse-dot"></span> <span class="hide-on-350">24/7 সাপোর্ট সার্ভিস চালু আছে</span><span class="show-on-350">24/7 সাপোর্ট</span></span>
+            <span class="top-phone"><i class="fa-solid fa-phone"></i> <span class="hide-on-350">সরাসরি কথা বলুন: </span><a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="phone-link-nowrap"><?php echo esc_html($phone); ?></a></span>
         </div>
         <div class="top-announcement-right">
             <span><i class="fa-solid fa-location-dot"></i> ঢাকা ও নীলফামারী অফিস</span>

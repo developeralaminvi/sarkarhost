@@ -1015,11 +1015,11 @@ function sarkarhost_cta_banner_shortcode($atts) {
                 <div class="cta-btn-group">
                     <a href="https://wa.me/<?php echo esc_attr(preg_replace('/[^0-9]/', '', $wa)); ?>?text=Hello%20Sarkar%20Host,%20I%20want%20to%20get%20started" target="_blank" class="btn btn-cta-primary btn-lg">
                         <i class="fa-brands fa-whatsapp"></i>
-                        <span>Get Started With Sarkar Host</span>
+                        <span>শুরু করুন (WhatsApp)</span>
                     </a>
                     <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-cta-secondary btn-lg">
                         <i class="fa-solid fa-phone-volume"></i>
-                        <span>কল করুন: <?php echo esc_html($phone); ?></span>
+                        <span>কল করুন: <span class="phone-link-nowrap"><?php echo esc_html($phone); ?></span></span>
                     </a>
                 </div>
             </div>
