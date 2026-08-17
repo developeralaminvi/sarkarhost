@@ -3072,6 +3072,27 @@ body.mobile-nav-open {
         padding: 0.85rem 0.75rem !important;
         gap: 0.65rem !important;
     }
+
+    .service-details-section {
+        padding: 2rem 0;
+    }
+
+    .seo-spotlight-wrapper {
+        padding: 1rem;
+    }
+
+    .seo-reasons-box {
+        padding: 1rem 0.5rem;
+    }
+
+    .overview-card {
+        padding: 1.2rem;
+    }
+
+    .footer-bottom-inner {
+        justify-content: center;
+    }
+
 }
 
 /* Floating WhatsApp & Scroll Top Buttons */
