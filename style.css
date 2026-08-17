@@ -314,6 +314,11 @@ img {
 }
 
 /* WP Nav Menu */
+.mobile-drawer-header,
+.mobile-nav-actions {
+    display: none;
+}
+
 .nav-menu ul {
     display: flex;
     align-items: center;
@@ -2089,8 +2094,43 @@ body.mobile-nav-open {
     .metric-divider { display: none; }
     .section-title { font-size: 2rem; }
     .cta-title { font-size: 2rem; }
-    .d-none-mobile { display: none; }
-    .mobile-menu-toggle { display: flex; }
+    .d-none-mobile { display: none !important; }
+    
+    /* Clean Mobile Top Header: Logo on Left, Menu Toggle on Right */
+    .site-header .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-color);
+        color: var(--text-white);
+        font-size: 1.25rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .mobile-menu-toggle:hover,
+    .mobile-menu-toggle:active {
+        background: rgba(196, 238, 24, 0.1);
+        border-color: var(--accent-lime);
+        color: var(--accent-lime);
+    }
 
     /* Modern Sliding Mobile Drawer */
     .nav-menu {
@@ -2098,18 +2138,18 @@ body.mobile-nav-open {
         top: 0;
         right: -100%;
         width: 88%;
-        max-width: 380px;
+        max-width: 360px;
         height: 100vh;
         height: 100dvh;
         background: rgba(9, 11, 20, 0.98);
         backdrop-filter: blur(25px);
         -webkit-backdrop-filter: blur(25px);
         border-left: 1px solid var(--border-color);
-        padding: 5rem 1.5rem 2.5rem;
+        padding: 1.5rem 1.25rem 2rem;
         overflow-y: auto;
-        z-index: 98;
+        z-index: 99999;
         transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: -15px 0 50px rgba(0, 0, 0, 0.8);
+        box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
         display: block;
     }
 
@@ -2120,22 +2160,82 @@ body.mobile-nav-open {
     .nav-menu-inner {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
         min-height: 100%;
+    }
+
+    /* Mobile Drawer Top Header */
+    .mobile-drawer-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .drawer-logo-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .drawer-logo-main {
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: var(--text-white);
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
+
+    .drawer-logo-main span {
+        color: var(--accent-lime);
+    }
+
+    .drawer-logo-sub {
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .drawer-close-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .drawer-close-btn:hover {
+        background: #ef4444;
+        color: #fff;
+        border-color: #ef4444;
+    }
+
+    /* Mobile Navigation List */
+    .nav-menu-links-wrap {
+        margin-bottom: 1.25rem;
     }
 
     .nav-menu ul.main-nav-list,
     .nav-menu ul {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.4rem;
+        gap: 0.35rem;
         width: 100%;
     }
 
     .nav-menu li {
         width: 100%;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        padding-bottom: 0.4rem;
+        padding-bottom: 0.35rem;
     }
 
     .nav-item-flex {
@@ -2148,7 +2248,7 @@ body.mobile-nav-open {
     .nav-menu a {
         padding: 0.65rem 0.5rem;
         width: 100%;
-        font-size: 1.05rem;
+        font-size: 1rem;
         display: flex;
         align-items: center;
         gap: 0.65rem;
@@ -2233,19 +2333,84 @@ body.mobile-nav-open {
         font-size: 0.85rem;
     }
 
-    /* Mobile Drawer Action Buttons */
+    /* Mobile Drawer Actions & Contact Box */
     .mobile-nav-actions {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
-        gap: 0.75rem;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
+        gap: 0.65rem;
+        margin-top: 1rem;
+        padding-top: 1.25rem;
         border-top: 1px solid var(--border-color);
     }
 
-    .mobile-nav-actions .btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.92rem;
+    .mobile-drawer-cta {
+        font-size: 0.95rem;
+        padding: 0.85rem 1rem;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+    }
+
+    .mobile-action-buttons-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .mobile-action-buttons-grid .btn {
+        padding: 0.7rem 0.5rem;
+        font-size: 0.82rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+    }
+
+    .btn-wa-drawer {
+        background: #22c55e;
+        color: #fff;
+        border: 1px solid #16a34a;
+        font-weight: 700;
+    }
+
+    .btn-wa-drawer:hover {
+        background: #16a34a;
+        color: #fff;
+    }
+
+    /* Mobile Drawer Info Card */
+    .mobile-drawer-info-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-sm);
+        padding: 0.85rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 0.35rem;
+    }
+
+    .drawer-info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: #94a3b8;
+    }
+
+    .drawer-info-item i {
+        color: var(--accent-lime);
+        width: 14px;
+        text-align: center;
+    }
+
+    .drawer-info-item.highlight {
+        color: #c4ee18;
+        font-weight: 600;
     }
 
     .overview-grid, .services-grid, .process-grid, .offices-grid { grid-template-columns: 1fr; }

@@ -62,26 +62,66 @@ $wa = sarkarhost_get_opt('sarkarhost_whatsapp', '8801321222308');
         <!-- Navigation Menu -->
         <nav class="nav-menu" id="navMenu">
             <div class="nav-menu-inner">
-                <?php
-                if (has_nav_menu('primary_menu')) {
-                    wp_nav_menu([
-                        'theme_location' => 'primary_menu',
-                        'container'      => false,
-                        'fallback_cb'    => 'sarkarhost_default_menu',
-                        'items_wrap'     => '<ul class="main-nav-list">%3$s</ul>',
-                    ]);
-                } else {
-                    sarkarhost_default_menu();
-                }
-                ?>
-                <!-- Mobile Drawer Quick Actions -->
+                <!-- Mobile Drawer Header -->
+                <div class="mobile-drawer-header">
+                    <div class="drawer-logo-wrap">
+                        <span class="drawer-logo-main">SARKAR<span>HOST</span></span>
+                        <span class="drawer-logo-sub">IT & Digital Solutions</span>
+                    </div>
+                    <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="<?php esc_attr_e('Close Menu', 'sarkarhost'); ?>">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Navigation List -->
+                <div class="nav-menu-links-wrap">
+                    <?php
+                    if (has_nav_menu('primary_menu')) {
+                        wp_nav_menu([
+                            'theme_location' => 'primary_menu',
+                            'container'      => false,
+                            'fallback_cb'    => 'sarkarhost_default_menu',
+                            'items_wrap'     => '<ul class="main-nav-list">%3$s</ul>',
+                        ]);
+                    } else {
+                        sarkarhost_default_menu();
+                    }
+                    ?>
+                </div>
+
+                <!-- Mobile Drawer Actions & Contact Info -->
                 <div class="mobile-nav-actions">
-                    <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-outline btn-block">
-                        <i class="fa-solid fa-phone-volume"></i> <span>হটলাইন: <?php echo esc_html($phone); ?></span>
+                    <!-- Primary Contact CTA -->
+                    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn btn-primary btn-block mobile-drawer-cta">
+                        <span>যোগাযোগ করুন</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </a>
-                    <a href="https://wa.me/<?php echo esc_attr(preg_replace('/[^0-9]/', '', $wa)); ?>?text=Hello%20Sarkar%20Host" target="_blank" class="btn btn-primary btn-block">
-                        <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp চ্যাট করুন</span>
-                    </a>
+
+                    <!-- Hotline & WhatsApp Quick Actions -->
+                    <div class="mobile-action-buttons-grid">
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-outline btn-block">
+                            <i class="fa-solid fa-phone-volume"></i> <span>কল: <?php echo esc_html($phone); ?></span>
+                        </a>
+                        <a href="https://wa.me/<?php echo esc_attr(preg_replace('/[^0-9]/', '', $wa)); ?>?text=Hello%20Sarkar%20Host" target="_blank" class="btn btn-wa-drawer btn-block">
+                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp চ্যাট</span>
+                        </a>
+                    </div>
+
+                    <!-- Contact & Office Info Box -->
+                    <div class="mobile-drawer-info-card">
+                        <div class="drawer-info-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>ঢাকা ও নীলফামারী অফিস</span>
+                        </div>
+                        <div class="drawer-info-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span><?php echo esc_html(sarkarhost_get_opt('sarkarhost_email', 'info@sarkarhost.com')); ?></span>
+                        </div>
+                        <div class="drawer-info-item highlight">
+                            <span class="pulse-dot"></span>
+                            <span>24/7 সাপোর্ট সার্ভিস চালু আছে</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -91,7 +131,7 @@ $wa = sarkarhost_get_opt('sarkarhost_whatsapp', '8801321222308');
             <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-outline d-none-mobile">
                 <i class="fa-solid fa-phone-volume"></i> <?php echo esc_html($phone); ?>
             </a>
-            <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn btn-primary">
+            <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn btn-primary d-none-mobile header-contact-btn">
                 <span>যোগাযোগ করুন</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </a>

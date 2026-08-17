@@ -95,6 +95,14 @@ function initMobileNav() {
         toggleMenu();
     });
 
+    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+    if (drawerCloseBtn) {
+        drawerCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu(true);
+        });
+    }
+
     if (overlay) {
         overlay.addEventListener('click', () => toggleMenu(true));
     }
