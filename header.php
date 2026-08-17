@@ -99,16 +99,20 @@ $wa = sarkarhost_get_opt('sarkarhost_whatsapp', '8801321222308');
 
                     <!-- Hotline & WhatsApp Quick Actions -->
                     <div class="mobile-action-buttons-grid">
-                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-outline btn-block">
-                            <i class="fa-solid fa-phone-volume"></i> <span>কল: <?php echo esc_html($phone); ?></span>
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="btn btn-call-drawer btn-block">
+                            <i class="fa-solid fa-phone-volume"></i> <span>কল করুন</span>
                         </a>
                         <a href="https://wa.me/<?php echo esc_attr(preg_replace('/[^0-9]/', '', $wa)); ?>?text=Hello%20Sarkar%20Host" target="_blank" class="btn btn-wa-drawer btn-block">
-                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp চ্যাট</span>
+                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
                         </a>
                     </div>
 
                     <!-- Contact & Office Info Box -->
                     <div class="mobile-drawer-info-card">
+                        <div class="drawer-info-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="phone-link-nowrap"><?php echo esc_html($phone); ?></a>
+                        </div>
                         <div class="drawer-info-item">
                             <i class="fa-solid fa-location-dot"></i>
                             <span>ঢাকা ও নীলফামারী অফিস</span>
