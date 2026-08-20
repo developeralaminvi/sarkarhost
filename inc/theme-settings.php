@@ -466,9 +466,38 @@ function sarkarhost_register_settings() {
     register_setting('sarkarhost_settings_group', 'sarkarhost_dhaka_map');
 
     // Theme Colors
-    register_setting('sarkarhost_settings_group', 'sarkarhost_primary_color');
-    register_setting('sarkarhost_settings_group', 'sarkarhost_accent_lime');
-    register_setting('sarkarhost_settings_group', 'sarkarhost_bg_dark');
+    $color_defaults = function_exists('sarkarhost_get_theme_color_defaults') ? sarkarhost_get_theme_color_defaults() : [
+        'sarkarhost_primary_color'       => '#2563eb',
+        'sarkarhost_primary_hover'       => '#1d4ed8',
+        'sarkarhost_accent_lime'         => '#c4ee18',
+        'sarkarhost_accent_cyan'         => '#06b6d4',
+        'sarkarhost_accent_purple'       => '#8b5cf6',
+        'sarkarhost_accent_green'        => '#10b981',
+        'sarkarhost_accent_orange'       => '#f97316',
+        'sarkarhost_accent_yellow'       => '#facc15',
+        'sarkarhost_accent_pink'         => '#f472b6',
+        'sarkarhost_bg_dark'             => '#090a10',
+        'sarkarhost_bg_dark_secondary'   => '#0f121d',
+        'sarkarhost_bg_surface'          => '#141824',
+        'sarkarhost_bg_card'             => '#151928',
+        'sarkarhost_bg_card_hover'       => '#1b2135',
+        'sarkarhost_text_main'           => '#f8fafc',
+        'sarkarhost_text_muted'          => '#94a3b8',
+        'sarkarhost_text_dim'            => '#64748b',
+        'sarkarhost_text_white'          => '#ffffff',
+        'sarkarhost_text_dark'           => '#090a10',
+        'sarkarhost_border_color'        => '#222738',
+        'sarkarhost_border_hover'        => '#c4ee18',
+        'sarkarhost_border_focus'        => '#2563eb',
+        'sarkarhost_primary_glow'        => '#2563eb',
+        'sarkarhost_color_whatsapp'      => '#25d366',
+        'sarkarhost_color_call'          => '#2563eb',
+        'sarkarhost_color_success'       => '#22c55e',
+        'sarkarhost_color_error'         => '#ef4444',
+    ];
+    foreach ($color_defaults as $color_key => $default_hex) {
+        register_setting('sarkarhost_settings_group', $color_key);
+    }
 
     // Contact Form 7 Shortcode
     register_setting('sarkarhost_settings_group', 'sarkarhost_cf7_shortcode');
@@ -774,68 +803,667 @@ function sarkarhost_settings_page_html() {
 
 
         <!-- TAB 2: COLOR SETTINGS -->
-        <?php if ($active_tab == 'color_settings') : ?>
-        <form method="post" action="options.php" style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <?php if ($active_tab == 'color_settings') : 
+            $color_defaults = function_exists('sarkarhost_get_theme_color_defaults') ? sarkarhost_get_theme_color_defaults() : [];
+            
+            // Helper closure for color cards
+            $render_color_card = function($key, $label_bn, $label_en, $var_name, $default_val) {
+                $current_val = sarkarhost_get_opt($key, $default_val);
+                ?>
+                <div class="sh-color-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s;" data-key="<?php echo esc_attr($key); ?>" data-default="<?php echo esc_attr($default_val); ?>">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <div>
+                            <label for="<?php echo esc_attr($key); ?>" style="font-weight: 700; color: #0f172a; font-size: 13.5px; display: block; line-height: 1.3;">
+                                <?php echo esc_html($label_bn); ?>
+                            </label>
+                            <span style="font-size: 11px; color: #64748b;"><?php echo esc_html($label_en); ?></span>
+                        </div>
+                        <code style="font-size: 10.5px; background: #f1f5f9; color: #2563eb; padding: 2px 6px; border-radius: 4px;"><?php echo esc_html($var_name); ?></code>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="color" id="<?php echo esc_attr($key); ?>_picker" value="<?php echo esc_attr($current_val); ?>" class="sh-color-picker" style="height: 38px; width: 48px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; padding: 2px; background: #fff;">
+                        <input type="text" id="<?php echo esc_attr($key); ?>" name="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($current_val); ?>" class="sh-color-text" maxlength="7" placeholder="<?php echo esc_attr($default_val); ?>" style="flex: 1; font-family: monospace; font-size: 13px; font-weight: 600; padding: 7px 10px; border-radius: 6px; border: 1px solid #cbd5e1; text-transform: uppercase;">
+                        <button type="button" class="button button-small sh-reset-single" title="Default: <?php echo esc_attr($default_val); ?>" style="padding: 0 8px; height: 32px; line-height: 30px;" onclick="shResetColor('<?php echo esc_js($key); ?>', '<?php echo esc_js($default_val); ?>')">
+                            ↺
+                        </button>
+                    </div>
+                </div>
+                <?php
+            };
+        ?>
+        <form method="post" action="options.php" id="sh-color-form" style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
             <?php settings_fields('sarkarhost_settings_group'); ?>
 
-            <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px;">
-                <h2 style="margin: 0; color: #0f172a; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-                    <span class="dashicons dashicons-art" style="color: #2563eb;"></span>
-                    গ্লোবাল ব্র্যান্ড কালার ও থিম প্যালেট
-                </h2>
-                <p style="color: #64748b; margin: 5px 0 0; font-size: 13px;">
-                    এখানে কালার পরিবর্তন করলে সম্পূর্ণ ওয়েবসাইটের বাটন, টেক্সট হাইলাইট ও ব্যাকগ্রাউন্ড স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে।
-                </p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px;">
-                <!-- Primary -->
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px;">
-                    <label for="sarkarhost_primary_color" style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px;">
-                        Primary Brand Color (নীল/বাটন)
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="color" id="sarkarhost_primary_color" name="sarkarhost_primary_color" value="<?php echo esc_attr(sarkarhost_get_opt('sarkarhost_primary_color', '#2563eb')); ?>" style="height: 44px; width: 60px; border: none; border-radius: 6px; cursor: pointer;">
-                        <div>
-                            <code><?php echo esc_html(sarkarhost_get_opt('sarkarhost_primary_color', '#2563eb')); ?></code>
-                            <div style="font-size: 12px; color: #64748b;">Default: #2563eb</div>
-                        </div>
-                    </div>
+            <!-- Header -->
+            <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <h2 style="margin: 0; color: #0f172a; font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        <span class="dashicons dashicons-art" style="color: #2563eb; font-size: 24px; width: 24px; height: 24px;"></span>
+                        গ্লোবাল কালার প্যালেট ও থিম স্টাইলিং
+                    </h2>
+                    <p style="color: #64748b; margin: 4px 0 0; font-size: 13px;">
+                        এখানে ব্যাকগ্রাউন্ড, বাটন, কার্ড, টেক্সট ও অ্যাকসেন্টের প্রতিটি কালার পরিবর্তন করুন — সাথে সাথে লাইভ প্রিভিউতে পরিবর্তন দেখুন!
+                    </p>
                 </div>
-
-                <!-- Lime -->
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px;">
-                    <label for="sarkarhost_accent_lime" style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px;">
-                        Accent Lime (হাইলাইট/অ্যাক্টিভ)
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="color" id="sarkarhost_accent_lime" name="sarkarhost_accent_lime" value="<?php echo esc_attr(sarkarhost_get_opt('sarkarhost_accent_lime', '#c4ee18')); ?>" style="height: 44px; width: 60px; border: none; border-radius: 6px; cursor: pointer;">
-                        <div>
-                            <code><?php echo esc_html(sarkarhost_get_opt('sarkarhost_accent_lime', '#c4ee18')); ?></code>
-                            <div style="font-size: 12px; color: #64748b;">Default: #c4ee18</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dark BG -->
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px;">
-                    <label for="sarkarhost_bg_dark" style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px;">
-                        Background Dark Color (ব্যাকগ্রাউন্ড)
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="color" id="sarkarhost_bg_dark" name="sarkarhost_bg_dark" value="<?php echo esc_attr(sarkarhost_get_opt('sarkarhost_bg_dark', '#090a10')); ?>" style="height: 44px; width: 60px; border: none; border-radius: 6px; cursor: pointer;">
-                        <div>
-                            <code><?php echo esc_html(sarkarhost_get_opt('sarkarhost_bg_dark', '#090a10')); ?></code>
-                            <div style="font-size: 12px; color: #64748b;">Default: #090a10</div>
-                        </div>
-                    </div>
+                <div style="display: flex; gap: 10px;">
+                    <?php submit_button(__('💾 কালার সংরক্ষণ করুন', 'sarkarhost'), 'primary', 'submit_top', false, ['style' => 'background: #2563eb; border-color: #2563eb; padding: 6px 22px; font-weight: 700; border-radius: 8px; font-size: 13.5px;']); ?>
                 </div>
             </div>
 
-            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                <?php submit_button(__('Save Colors (কালার সংরক্ষণ করুন)', 'sarkarhost'), 'primary', 'submit', false, ['style' => 'background: #2563eb; border-color: #2563eb; padding: 8px 28px; font-weight: 700; border-radius: 8px;']); ?>
+            <!-- Quick Preset Palettes Toolbar -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; margin-bottom: 30px;">
+                <div style="font-weight: 700; color: #0f172a; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                    <span class="dashicons dashicons-color-picker" style="color: #2563eb;"></span>
+                    ⚡ ১-ক্লিকে রেডিমেড কালার প্রিসেট প্যালেট প্রয়োগ করুন:
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('clean_white')" style="display: flex; align-items: center; gap: 8px; font-weight: 700; padding: 6px 14px; height: auto; border-color: #2563eb; background: #eff6ff; color: #1e40af;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 1px solid #94a3b8;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #0f172a;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #2563eb;"></span>
+                        </span>
+                        ☀️ Clean White (লাইট মোড / হোয়াইট বিজি)
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('nordic_frost')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto; background: #f0fdf4; border-color: #0284c7; color: #0369a1;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #f8fafc; border: 1px solid #94a3b8;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #0f172a;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #0284c7;"></span>
+                        </span>
+                        ❄️ Nordic Frost (সফট লাইট)
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('cyber_tech')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #2563eb;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #c4ee18;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #090a10; border: 1px solid #64748b;"></span>
+                        </span>
+                        Cyber Tech (ডিফল্ট ডার্ক)
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('midnight_sapphire')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #3b82f6;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #38bdf8;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #030712; border: 1px solid #64748b;"></span>
+                        </span>
+                        Midnight Sapphire
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('emerald_matrix')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #a3e635;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #022c22; border: 1px solid #64748b;"></span>
+                        </span>
+                        Emerald Matrix
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('royal_purple')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #8b5cf6;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #f43f5e;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #0b0718; border: 1px solid #64748b;"></span>
+                        </span>
+                        Royal Cyberpunk
+                    </button>
+
+                    <button type="button" class="button sh-preset-btn" onclick="shApplyPreset('sunset_crimson')" style="display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 6px 14px; height: auto;">
+                        <span style="display: flex; gap: 3px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #f97316;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #facc15;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #0c0a09; border: 1px solid #64748b;"></span>
+                        </span>
+                        Sunset Crimson
+                    </button>
+
+                    <button type="button" class="button" onclick="shResetAllDefaults()" style="color: #dc2626; border-color: #fca5a5; background: #fff; margin-left: auto; font-weight: 600;">
+                        ↺ Reset All to Defaults
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive Live Mini-Preview Component -->
+            <div style="background: #0f172a; border-radius: 12px; padding: 22px; margin-bottom: 35px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <div style="color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22c55e; animation: pulse 1.5s infinite;"></span>
+                        🖥️ লাইভ রিয়েল-টাইম প্রিভিউ (Live Preview)
+                    </div>
+                    <span style="color: #94a3b8; font-size: 12px;">নিচের যেকোনো কালার পরিবর্তনের সাথে সাথে এখানে লাইভ প্রিভিউ পরিবর্তিত হবে</span>
+                </div>
+
+                <!-- Preview Window -->
+                <div id="sh-live-preview-box" style="background-color: #090a10; border-radius: 10px; padding: 25px; border: 1px solid #222738; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.3s ease;">
+                    
+                    <!-- Preview Navbar -->
+                    <div id="prev-header" style="display: flex; justify-content: space-between; align-items: center; background: #0f121d; padding: 12px 18px; border-radius: 8px; border: 1px solid #222738; margin-bottom: 20px;">
+                        <div style="font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 6px;">
+                            <span id="prev-logo-dot" style="width: 12px; height: 12px; border-radius: 3px; background: #2563eb;"></span>
+                            <span id="prev-logo-text" style="color: #ffffff;">Sarkar Host</span>
+                        </div>
+                        <div style="display: flex; gap: 15px; font-size: 13px; font-weight: 600;">
+                            <span id="prev-nav-active" style="color: #c4ee18; border-bottom: 2px solid #c4ee18; padding-bottom: 2px;">হোমপেজ</span>
+                            <span id="prev-nav-item" style="color: #94a3b8;">সেবাসমূহ</span>
+                            <span style="color: #94a3b8;">হোস্টিং</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <span id="prev-call-btn" style="background: #2563eb; color: #ffffff; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;">📞 01321-222308</span>
+                        </div>
+                    </div>
+
+                    <!-- Preview Hero & Card Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; align-items: center;">
+                        <!-- Hero Text Area -->
+                        <div>
+                            <div id="prev-badge" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(196, 238, 24, 0.15); border: 1px solid #c4ee18; color: #c4ee18; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px;">
+                                ⚡ টপ রেটেড আইটি ও হোস্টিং সলিউশন
+                            </div>
+                            <h3 id="prev-hero-title" style="color: #f8fafc; font-size: 20px; font-weight: 800; line-height: 1.3; margin: 0 0 10px;">
+                                আপনার বিজনেসের জন্য <span id="prev-hero-highlight" style="color: #c4ee18;">প্রফেশনাল ডিজিটাল</span> সার্ভিস
+                            </h3>
+                            <p id="prev-hero-desc" style="color: #94a3b8; font-size: 13px; margin: 0 0 16px; line-height: 1.5;">
+                                ওয়েবসাইট ডেভেলপমেন্ট, বিডিআইএক্স হোস্টিং এবং গুগল টপ র‍্যাংকিং এসইও সার্ভিস দিয়ে আপনার ব্যবসাকে নিয়ে যান অনন্য উচ্চতায়।
+                            </p>
+                            <div style="display: flex; gap: 10px;">
+                                <span id="prev-btn-primary" style="background: #2563eb; color: #ffffff; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 12.5px; box-shadow: 0 4px 14px rgba(37,99,235,0.4);">
+                                    অর্ডার করুন →
+                                </span>
+                                <span id="prev-btn-wa" style="background: #25d366; color: #ffffff; padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 12.5px;">
+                                    💬 WhatsApp
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Service Card Sample -->
+                        <div id="prev-card" style="background: #151928; border: 1px solid #222738; border-radius: 10px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span id="prev-card-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(37,99,235,0.15); color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold;">⚡</span>
+                                <span id="prev-card-status" style="background: rgba(34,197,94,0.15); color: #22c55e; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px;">৯৯.৯% আপটাইম</span>
+                            </div>
+                            <h4 id="prev-card-title" style="color: #f8fafc; font-size: 15px; font-weight: 700; margin: 0 0 6px;">BDIX NVMe হোস্টিং প্যাকেজ</h4>
+                            <p id="prev-card-text" style="color: #94a3b8; font-size: 12px; margin: 0 0 12px; line-height: 1.4;">সুপার ফাস্ট লোডিং স্পিড এবং আনলিমিটেড ফ্রি SSL সার্টিফিকেট সহ সম্পূর্ণ সিকিউর হোস্টিং।</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #222738; padding-top: 10px;">
+                                <span id="prev-card-price" style="font-size: 13px; font-weight: 800; color: #c4ee18;">৳৯৯৯ / বছর</span>
+                                <span id="prev-card-btn" style="color: #2563eb; font-size: 12px; font-weight: 700;">বিস্তারিত দেখুন &rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECTION 1: MAIN BRAND & ACCENTS -->
+            <div style="margin-bottom: 35px;">
+                <div style="border-left: 4px solid #2563eb; padding-left: 12px; margin-bottom: 18px;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 800;">
+                        🎨 ১. মূল ব্র্যান্ড ও অ্যাকসেন্ট কালার (Brand & Accent Colors)
+                    </h3>
+                    <p style="margin: 2px 0 0; color: #64748b; font-size: 12.5px;">সাইটের মূল বাটন, হেডিং হাইলাইট, সার্ভিস ব্যাজ এবং গ্রেডিয়েন্টে ব্যবহৃত কালার</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <?php 
+                    $render_color_card('sarkarhost_primary_color', 'Primary Brand Color', 'মূল বাটন, আইকন ও ফোকাস', '--primary', '#2563eb');
+                    $render_color_card('sarkarhost_primary_hover', 'Primary Hover Color', 'বাটন হোভার ইফেক্ট কালার', '--primary-hover', '#1d4ed8');
+                    $render_color_card('sarkarhost_accent_lime', 'Accent Lime Green', 'হিরো ট্যাগ ও হাইলাইট পিল', '--accent-lime', '#c4ee18');
+                    $render_color_card('sarkarhost_accent_cyan', 'Accent Cyan / Sky', 'ডিজিটাল সলিউশন ও ট্যাগ', '--accent-cyan', '#06b6d4');
+                    $render_color_card('sarkarhost_accent_purple', 'Accent Purple', 'ওয়েব ডেভেলপমেন্ট ব্যাজ ও গ্রেডিয়েন্ট', '--accent-purple', '#8b5cf6');
+                    $render_color_card('sarkarhost_accent_green', 'Accent Green', 'হোস্টিং ব্যাজ ও সক্রিয় স্টেট', '--accent-green', '#10b981');
+                    $render_color_card('sarkarhost_accent_orange', 'Accent Orange', 'মার্কেটিং ও স্পিড ইন্ডিকেটর', '--accent-orange', '#f97316');
+                    $render_color_card('sarkarhost_accent_yellow', 'Accent Yellow / Star', 'এসইও ব্যাজ ও স্টার রেটিং', '--accent-yellow', '#facc15');
+                    $render_color_card('sarkarhost_accent_pink', 'Accent Pink / Magenta', 'গ্রাফিক্স ডিজাইন ব্যাজ ও ক্রিয়েটিভ', '--accent-pink', '#f472b6');
+                    ?>
+                </div>
+            </div>
+
+            <!-- SECTION 2: BACKGROUNDS & SURFACES -->
+            <div style="margin-bottom: 35px;">
+                <div style="border-left: 4px solid #090a10; padding-left: 12px; margin-bottom: 18px;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 800;">
+                        🌌 ২. ব্যাকগ্রাউন্ড ও সারফেস কালার (Backgrounds & Surface Layers)
+                    </h3>
+                    <p style="margin: 2px 0 0; color: #64748b; font-size: 12.5px;">সাইটের মূল পেজ ব্যাকগ্রাউন্ড, হেডার-ফুটার ও বিভিন্ন কার্ডের ব্যাকগ্রাউন্ড</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <?php 
+                    $render_color_card('sarkarhost_bg_dark', 'Main Dark Background', 'ওয়েবসাইটের সম্পূর্ণ মূল ব্যাকগ্রাউন্ড', '--bg-dark', '#090a10');
+                    $render_color_card('sarkarhost_bg_dark_secondary', 'Secondary Background', 'হেডার, ফুটার ও অলটারনেটিভ সেকশন', '--bg-dark-secondary', '#0f121d');
+                    $render_color_card('sarkarhost_bg_surface', 'Surface / Dropdown BG', 'ড্রপডাউন মেনু, মডাল ও ইনপুট সারফেস', '--bg-surface', '#141824');
+                    $render_color_card('sarkarhost_bg_card', 'Card Base Background', 'সার্ভিস কার্ড ও প্যাকেজ বক্সের ব্যাকগ্রাউন্ড', '--bg-card', '#151928');
+                    $render_color_card('sarkarhost_bg_card_hover', 'Card Hover Background', 'কার্ডে মাউস হোভার করলে পরিবর্তিত ব্যাকগ্রাউন্ড', '--bg-card-hover', '#1b2135');
+                    ?>
+                </div>
+            </div>
+
+            <!-- SECTION 3: TYPOGRAPHY & TEXT -->
+            <div style="margin-bottom: 35px;">
+                <div style="border-left: 4px solid #94a3b8; padding-left: 12px; margin-bottom: 18px;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 800;">
+                        ✍️ ৩. টেক্সট ও টাইপোগ্রাফি কালার (Typography & Text Colors)
+                    </h3>
+                    <p style="margin: 2px 0 0; color: #64748b; font-size: 12.5px;">হেডিং, প্যারাগ্রাফ, সাবটাইটেল এবং ব্রাইট হাইলাইটের উপর টেক্সট কালার</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <?php 
+                    $render_color_card('sarkarhost_text_main', 'Main Text / Headings', 'প্রধান হেডিং ও মূল বডি টেক্সট', '--text-main', '#f8fafc');
+                    $render_color_card('sarkarhost_text_muted', 'Muted Text', 'সাবটাইটেল ও বর্ণনামূলক টেক্সট', '--text-muted', '#94a3b8');
+                    $render_color_card('sarkarhost_text_dim', 'Dim / Meta Text', 'টাইমস্ট্যাম্প, মেটা ও ফুটনোট টেক্সট', '--text-dim', '#64748b');
+                    $render_color_card('sarkarhost_text_white', 'Pure White Text', 'সম্পূর্ণ সাদা টেক্সট কালার', '--text-white', '#ffffff');
+                    $render_color_card('sarkarhost_text_dark', 'Dark Contrast Text', 'উজ্জ্বল লাইম/হলুদ ব্যাকগ্রাউন্ডের ওপর টেক্সট', '--text-dark', '#090a10');
+                    ?>
+                </div>
+            </div>
+
+            <!-- SECTION 4: BORDERS, FOCUS & GLOW -->
+            <div style="margin-bottom: 35px;">
+                <div style="border-left: 4px solid #c4ee18; padding-left: 12px; margin-bottom: 18px;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 800;">
+                        🔲 ৪. বর্ডার, ফোকাস ও গ্লো ইফেক্ট (Borders, Focus & Glow Effects)
+                    </h3>
+                    <p style="margin: 2px 0 0; color: #64748b; font-size: 12.5px;">কার্ডের বর্ডার লাইন, ইনপুট ফোকাস এবং হিরো সেকশনের গ্লো লাইট কালার</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <?php 
+                    $render_color_card('sarkarhost_border_color', 'Default Border Color', 'কার্ড ও কন্টেইনারের স্বাভাবিক বর্ডার', '--border-color', '#222738');
+                    $render_color_card('sarkarhost_border_hover', 'Border Hover Color', 'কার্ডে মাউস নিলে অ্যাক্টিভ বর্ডার', '--border-hover', '#c4ee18');
+                    $render_color_card('sarkarhost_border_focus', 'Input Focus Border', 'ফর্মের ইনপুট ফিল্ড সিলেক্ট করলে বর্ডার', '--border-focus', '#2563eb');
+                    $render_color_card('sarkarhost_primary_glow', 'Primary Glow Color', 'হিরো ব্যাকগ্রাউন্ড ও বাটনের গ্লো লাইট', '--primary-glow', '#2563eb');
+                    ?>
+                </div>
+            </div>
+
+            <!-- SECTION 5: ACTION & STATUS BUTTONS -->
+            <div style="margin-bottom: 30px;">
+                <div style="border-left: 4px solid #25d366; padding-left: 12px; margin-bottom: 18px;">
+                    <h3 style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 800;">
+                        ⚡ ৫. অ্যাকশন বাটন ও স্ট্যাটাস ব্যাজ (Action & Status Colors)
+                    </h3>
+                    <p style="margin: 2px 0 0; color: #64748b; font-size: 12.5px;">হোয়াটসঅ্যাপ বাটন, ফোন কল বাটন, সফল ও সতর্কতা অ্যালার্ট কালার</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <?php 
+                    $render_color_card('sarkarhost_color_whatsapp', 'WhatsApp CTA Button', 'ফ্লোটিং ও সরাসরি হোয়াটসঅ্যাপ বাটন', '--color-whatsapp', '#25d366');
+                    $render_color_card('sarkarhost_color_call', 'Direct Call Button', 'হেডার ও ফ্লোটিং ফোন কল বাটন', '--color-call', '#2563eb');
+                    $render_color_card('sarkarhost_color_success', 'Success / Online Badge', 'সফল ফর্ম মেসেজ ও অনলাইন স্ট্যাটাস', '--color-success', '#22c55e');
+                    $render_color_card('sarkarhost_color_error', 'Error / Alert Badge', 'ভুল তথ্য ও জরুরি নোটিফিকেশন অ্যালার্ট', '--color-error', '#ef4444');
+                    ?>
+                </div>
+            </div>
+
+            <!-- Bottom Save Button -->
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <button type="button" class="button" onclick="shResetAllDefaults()" style="color: #dc2626; border-color: #fca5a5; font-weight: 600;">
+                    ↺ ডিফল্ট কালার রিস্টোর করুন (Reset Defaults)
+                </button>
+                <?php submit_button(__('Save Colors (সব কালার সংরক্ষণ করুন)', 'sarkarhost'), 'primary', 'submit', false, ['style' => 'background: #2563eb; border-color: #2563eb; padding: 10px 32px; font-weight: 800; border-radius: 8px; font-size: 14px;']); ?>
             </div>
         </form>
+
+        <script>
+        // Preset Palette Configurations
+        const SH_PRESETS = {
+            cyber_tech: {
+                sarkarhost_primary_color: '#2563eb',
+                sarkarhost_primary_hover: '#1d4ed8',
+                sarkarhost_accent_lime: '#c4ee18',
+                sarkarhost_accent_cyan: '#06b6d4',
+                sarkarhost_accent_purple: '#8b5cf6',
+                sarkarhost_accent_green: '#10b981',
+                sarkarhost_accent_orange: '#f97316',
+                sarkarhost_accent_yellow: '#facc15',
+                sarkarhost_accent_pink: '#f472b6',
+                sarkarhost_bg_dark: '#090a10',
+                sarkarhost_bg_dark_secondary: '#0f121d',
+                sarkarhost_bg_surface: '#141824',
+                sarkarhost_bg_card: '#151928',
+                sarkarhost_bg_card_hover: '#1b2135',
+                sarkarhost_text_main: '#f8fafc',
+                sarkarhost_text_muted: '#94a3b8',
+                sarkarhost_text_dim: '#64748b',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#090a10',
+                sarkarhost_border_color: '#222738',
+                sarkarhost_border_hover: '#c4ee18',
+                sarkarhost_border_focus: '#2563eb',
+                sarkarhost_primary_glow: '#2563eb',
+                sarkarhost_color_whatsapp: '#25d366',
+                sarkarhost_color_call: '#2563eb',
+                sarkarhost_color_success: '#22c55e',
+                sarkarhost_color_error: '#ef4444'
+            },
+            midnight_sapphire: {
+                sarkarhost_primary_color: '#3b82f6',
+                sarkarhost_primary_hover: '#2563eb',
+                sarkarhost_accent_lime: '#38bdf8',
+                sarkarhost_accent_cyan: '#0ea5e9',
+                sarkarhost_accent_purple: '#6366f1',
+                sarkarhost_accent_green: '#06b6d4',
+                sarkarhost_accent_orange: '#f59e0b',
+                sarkarhost_accent_yellow: '#eab308',
+                sarkarhost_accent_pink: '#ec4899',
+                sarkarhost_bg_dark: '#030712',
+                sarkarhost_bg_dark_secondary: '#0b0f19',
+                sarkarhost_bg_surface: '#111827',
+                sarkarhost_bg_card: '#1e293b',
+                sarkarhost_bg_card_hover: '#334155',
+                sarkarhost_text_main: '#f9fafb',
+                sarkarhost_text_muted: '#9ca3af',
+                sarkarhost_text_dim: '#6b7280',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#030712',
+                sarkarhost_border_color: '#1f2937',
+                sarkarhost_border_hover: '#38bdf8',
+                sarkarhost_border_focus: '#3b82f6',
+                sarkarhost_primary_glow: '#3b82f6',
+                sarkarhost_color_whatsapp: '#22c55e',
+                sarkarhost_color_call: '#3b82f6',
+                sarkarhost_color_success: '#10b981',
+                sarkarhost_color_error: '#ef4444'
+            },
+            emerald_matrix: {
+                sarkarhost_primary_color: '#10b981',
+                sarkarhost_primary_hover: '#059669',
+                sarkarhost_accent_lime: '#a3e635',
+                sarkarhost_accent_cyan: '#2dd4bf',
+                sarkarhost_accent_purple: '#8b5cf6',
+                sarkarhost_accent_green: '#22c55e',
+                sarkarhost_accent_orange: '#f59e0b',
+                sarkarhost_accent_yellow: '#facc15',
+                sarkarhost_accent_pink: '#f43f5e',
+                sarkarhost_bg_dark: '#022c22',
+                sarkarhost_bg_dark_secondary: '#064e3b',
+                sarkarhost_bg_surface: '#043a2d',
+                sarkarhost_bg_card: '#065f46',
+                sarkarhost_bg_card_hover: '#047857',
+                sarkarhost_text_main: '#f0fdf4',
+                sarkarhost_text_muted: '#86efac',
+                sarkarhost_text_dim: '#4ade80',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#022c22',
+                sarkarhost_border_color: '#065f46',
+                sarkarhost_border_hover: '#a3e635',
+                sarkarhost_border_focus: '#10b981',
+                sarkarhost_primary_glow: '#10b981',
+                sarkarhost_color_whatsapp: '#22c55e',
+                sarkarhost_color_call: '#10b981',
+                sarkarhost_color_success: '#22c55e',
+                sarkarhost_color_error: '#ef4444'
+            },
+            royal_purple: {
+                sarkarhost_primary_color: '#8b5cf6',
+                sarkarhost_primary_hover: '#7c3aed',
+                sarkarhost_accent_lime: '#f43f5e',
+                sarkarhost_accent_cyan: '#38bdf8',
+                sarkarhost_accent_purple: '#a855f7',
+                sarkarhost_accent_green: '#10b981',
+                sarkarhost_accent_orange: '#fb923c',
+                sarkarhost_accent_yellow: '#facc15',
+                sarkarhost_accent_pink: '#f472b6',
+                sarkarhost_bg_dark: '#0b0718',
+                sarkarhost_bg_dark_secondary: '#150d2e',
+                sarkarhost_bg_surface: '#1c123d',
+                sarkarhost_bg_card: '#271854',
+                sarkarhost_bg_card_hover: '#3b207e',
+                sarkarhost_text_main: '#fdf4ff',
+                sarkarhost_text_muted: '#d8b4fe',
+                sarkarhost_text_dim: '#a855f7',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#0b0718',
+                sarkarhost_border_color: '#3b207e',
+                sarkarhost_border_hover: '#f43f5e',
+                sarkarhost_border_focus: '#8b5cf6',
+                sarkarhost_primary_glow: '#8b5cf6',
+                sarkarhost_color_whatsapp: '#25d366',
+                sarkarhost_color_call: '#8b5cf6',
+                sarkarhost_color_success: '#22c55e',
+                sarkarhost_color_error: '#ef4444'
+            },
+            clean_white: {
+                sarkarhost_primary_color: '#2563eb',
+                sarkarhost_primary_hover: '#1d4ed8',
+                sarkarhost_accent_lime: '#2563eb',
+                sarkarhost_accent_cyan: '#0284c7',
+                sarkarhost_accent_purple: '#7c3aed',
+                sarkarhost_accent_green: '#16a34a',
+                sarkarhost_accent_orange: '#ea580c',
+                sarkarhost_accent_yellow: '#ca8a04',
+                sarkarhost_accent_pink: '#db2777',
+                sarkarhost_bg_dark: '#ffffff',
+                sarkarhost_bg_dark_secondary: '#f8fafc',
+                sarkarhost_bg_surface: '#ffffff',
+                sarkarhost_bg_card: '#ffffff',
+                sarkarhost_bg_card_hover: '#f1f5f9',
+                sarkarhost_text_main: '#0f172a',
+                sarkarhost_text_muted: '#475569',
+                sarkarhost_text_dim: '#64748b',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#0f172a',
+                sarkarhost_border_color: '#e2e8f0',
+                sarkarhost_border_hover: '#2563eb',
+                sarkarhost_border_focus: '#2563eb',
+                sarkarhost_primary_glow: '#2563eb',
+                sarkarhost_color_whatsapp: '#25d366',
+                sarkarhost_color_call: '#2563eb',
+                sarkarhost_color_success: '#16a34a',
+                sarkarhost_color_error: '#dc2626'
+            },
+            nordic_frost: {
+                sarkarhost_primary_color: '#0284c7',
+                sarkarhost_primary_hover: '#0369a1',
+                sarkarhost_accent_lime: '#0284c7',
+                sarkarhost_accent_cyan: '#06b6d4',
+                sarkarhost_accent_purple: '#6366f1',
+                sarkarhost_accent_green: '#10b981',
+                sarkarhost_accent_orange: '#f97316',
+                sarkarhost_accent_yellow: '#eab308',
+                sarkarhost_accent_pink: '#ec4899',
+                sarkarhost_bg_dark: '#f8fafc',
+                sarkarhost_bg_dark_secondary: '#f1f5f9',
+                sarkarhost_bg_surface: '#ffffff',
+                sarkarhost_bg_card: '#ffffff',
+                sarkarhost_bg_card_hover: '#e2e8f0',
+                sarkarhost_text_main: '#0f172a',
+                sarkarhost_text_muted: '#334155',
+                sarkarhost_text_dim: '#64748b',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#0f172a',
+                sarkarhost_border_color: '#cbd5e1',
+                sarkarhost_border_hover: '#0284c7',
+                sarkarhost_border_focus: '#0284c7',
+                sarkarhost_primary_glow: '#0284c7',
+                sarkarhost_color_whatsapp: '#25d366',
+                sarkarhost_color_call: '#0284c7',
+                sarkarhost_color_success: '#16a34a',
+                sarkarhost_color_error: '#dc2626'
+            },
+            sunset_crimson: {
+                sarkarhost_primary_color: '#f97316',
+                sarkarhost_primary_hover: '#ea580c',
+                sarkarhost_accent_lime: '#facc15',
+                sarkarhost_accent_cyan: '#38bdf8',
+                sarkarhost_accent_purple: '#c084fc',
+                sarkarhost_accent_green: '#10b981',
+                sarkarhost_accent_orange: '#fb923c',
+                sarkarhost_accent_yellow: '#fde047',
+                sarkarhost_accent_pink: '#f43f5e',
+                sarkarhost_bg_dark: '#0c0a09',
+                sarkarhost_bg_dark_secondary: '#1c1917',
+                sarkarhost_bg_surface: '#292524',
+                sarkarhost_bg_card: '#3b2c28',
+                sarkarhost_bg_card_hover: '#573d36',
+                sarkarhost_text_main: '#fafaf9',
+                sarkarhost_text_muted: '#d6d3d1',
+                sarkarhost_text_dim: '#a8a29e',
+                sarkarhost_text_white: '#ffffff',
+                sarkarhost_text_dark: '#0c0a09',
+                sarkarhost_border_color: '#44403c',
+                sarkarhost_border_hover: '#facc15',
+                sarkarhost_border_focus: '#f97316',
+                sarkarhost_primary_glow: '#f97316',
+                sarkarhost_color_whatsapp: '#25d366',
+                sarkarhost_color_call: '#f97316',
+                sarkarhost_color_success: '#22c55e',
+                sarkarhost_color_error: '#ef4444'
+            }
+        };
+
+        // Reset single color
+        function shResetColor(key, defaultVal) {
+            const txt = document.getElementById(key);
+            const pkr = document.getElementById(key + '_picker');
+            if (txt && pkr) {
+                txt.value = defaultVal;
+                pkr.value = defaultVal;
+                shUpdateLivePreview();
+            }
+        }
+
+        // Apply preset palette
+        function shApplyPreset(presetKey) {
+            const preset = SH_PRESETS[presetKey];
+            if (!preset) return;
+            for (const [key, val] of Object.entries(preset)) {
+                const txt = document.getElementById(key);
+                const pkr = document.getElementById(key + '_picker');
+                if (txt && pkr) {
+                    txt.value = val;
+                    pkr.value = val;
+                }
+            }
+            shUpdateLivePreview();
+        }
+
+        // Reset all to defaults
+        function shResetAllDefaults() {
+            if (!confirm('আপনি কি সব কালার ডিফল্ট সেটিংস-এ রিস্টোর করতে চান?')) return;
+            shApplyPreset('cyber_tech');
+        }
+
+        // Update live preview in real-time
+        function shUpdateLivePreview() {
+            const getVal = (id, def) => {
+                const el = document.getElementById(id);
+                return (el && el.value) ? el.value : def;
+            };
+
+            const primary     = getVal('sarkarhost_primary_color', '#2563eb');
+            const lime        = getVal('sarkarhost_accent_lime', '#c4ee18');
+            const bgDark      = getVal('sarkarhost_bg_dark', '#090a10');
+            const bgDarkSec   = getVal('sarkarhost_bg_dark_secondary', '#0f121d');
+            const bgCard      = getVal('sarkarhost_bg_card', '#151928');
+            const textMain    = getVal('sarkarhost_text_main', '#f8fafc');
+            const textMuted   = getVal('sarkarhost_text_muted', '#94a3b8');
+            const borderCol   = getVal('sarkarhost_border_color', '#222738');
+            const callColor   = getVal('sarkarhost_color_call', '#2563eb');
+            const waColor     = getVal('sarkarhost_color_whatsapp', '#25d366');
+
+            // Apply to preview elements
+            const box = document.getElementById('sh-live-preview-box');
+            if (box) {
+                box.style.backgroundColor = bgDark;
+                box.style.borderColor = borderCol;
+            }
+
+            const header = document.getElementById('prev-header');
+            if (header) {
+                header.style.backgroundColor = bgDarkSec;
+                header.style.borderColor = borderCol;
+            }
+
+            const logoDot = document.getElementById('prev-logo-dot');
+            if (logoDot) logoDot.style.backgroundColor = primary;
+
+            const logoText = document.getElementById('prev-logo-text');
+            if (logoText) logoText.style.color = textMain;
+
+            const navActive = document.getElementById('prev-nav-active');
+            if (navActive) {
+                navActive.style.color = lime;
+                navActive.style.borderBottomColor = lime;
+            }
+
+            const navItem = document.getElementById('prev-nav-item');
+            if (navItem) navItem.style.color = textMuted;
+
+            const callBtn = document.getElementById('prev-call-btn');
+            if (callBtn) callBtn.style.backgroundColor = callColor;
+
+            const badge = document.getElementById('prev-badge');
+            if (badge) {
+                badge.style.borderColor = lime;
+                badge.style.color = lime;
+            }
+
+            const heroTitle = document.getElementById('prev-hero-title');
+            if (heroTitle) heroTitle.style.color = textMain;
+
+            const heroHl = document.getElementById('prev-hero-highlight');
+            if (heroHl) heroHl.style.color = lime;
+
+            const heroDesc = document.getElementById('prev-hero-desc');
+            if (heroDesc) heroDesc.style.color = textMuted;
+
+            const btnPrimary = document.getElementById('prev-btn-primary');
+            if (btnPrimary) btnPrimary.style.backgroundColor = primary;
+
+            const btnWa = document.getElementById('prev-btn-wa');
+            if (btnWa) btnWa.style.backgroundColor = waColor;
+
+            const card = document.getElementById('prev-card');
+            if (card) {
+                card.style.backgroundColor = bgCard;
+                card.style.borderColor = borderCol;
+            }
+
+            const cardTitle = document.getElementById('prev-card-title');
+            if (cardTitle) cardTitle.style.color = textMain;
+
+            const cardText = document.getElementById('prev-card-text');
+            if (cardText) cardText.style.color = textMuted;
+
+            const cardPrice = document.getElementById('prev-card-price');
+            if (cardPrice) cardPrice.style.color = lime;
+
+            const cardBtn = document.getElementById('prev-card-btn');
+            if (cardBtn) cardBtn.style.color = primary;
+        }
+
+        // Initialize two-way synchronization on load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.sh-color-picker').forEach(picker => {
+                const targetTextId = picker.id.replace('_picker', '');
+                const targetText = document.getElementById(targetTextId);
+
+                picker.addEventListener('input', function() {
+                    if (targetText) targetText.value = picker.value.toUpperCase();
+                    shUpdateLivePreview();
+                });
+            });
+
+            document.querySelectorAll('.sh-color-text').forEach(textInput => {
+                const targetPicker = document.getElementById(textInput.id + '_picker');
+
+                textInput.addEventListener('input', function() {
+                    let val = textInput.value.trim();
+                    if (!val.startsWith('#') && val.length > 0) {
+                        val = '#' + val;
+                        textInput.value = val;
+                    }
+                    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+                        if (targetPicker) targetPicker.value = val;
+                        shUpdateLivePreview();
+                    }
+                });
+            });
+
+            // Initial preview sync
+            shUpdateLivePreview();
+        });
+        </script>
         <?php endif; ?>
 
 

@@ -3,7 +3,7 @@ Contributors: Sarkar Host Team
 Tags: it-consulting, seo-service, web-development, hosting, digital-marketing, dark-theme, responsive
 Requires at least: 5.8
 Tested up to: 6.7
-Stable tag: 1.2.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 
 == Description ==

@@ -366,7 +366,7 @@ function sarkarhost_seo_service_shortcode($atts) {
 
                 <div class="seo-reasons-box">
                     <div class="text-center">
-                        <h3 style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">কেন আমাদের SEO Service নেবেন?</h3>
+                        <h3 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">কেন আমাদের SEO Service নেবেন?</h3>
                         <p style="color: var(--text-muted);">আমরা সততা ও গুগলের White-Hat নিয়মানুযায়ী স্থায়ী প্রবৃদ্ধির নিশ্চয়তা দিই।</p>
                     </div>
                     <div class="seo-reasons-grid">
@@ -928,7 +928,7 @@ function sarkarhost_offices_shortcode($atts) {
             <!-- Contact Form Area (CF7 or Default) -->
             <div class="contact-page-wrapper" style="margin-top: 4rem;">
                 <div class="contact-form-box">
-                    <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">সরাসরি মেসেজ পাঠান</h3>
+                    <h3 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">সরাসরি মেসেজ পাঠান</h3>
                     <p style="color: var(--text-muted); margin-bottom: 2rem;">ফর্মটি পূরণ করলে আমাদের টিম দ্রুত আপনার সাথে যোগাযোগ করবে।</p>
                     
                     <?php if (!empty($cf7_code) && function_exists('wpcf7')) : ?>
@@ -945,7 +945,7 @@ function sarkarhost_offices_shortcode($atts) {
                             <div class="form-group">
                                 <label><i class="fa-solid fa-phone"></i> মোবাইল নম্বর (১১ ডিজিট) *</label>
                                 <input type="tel" id="clientPhone" required pattern="^(?:\+?88|88)?01[3-9]\d{8}$" placeholder="যেমন: 017XXXXXXXX">
-                                <small style="color: #94a3b8; font-size: 0.75rem;">সঠিক ও সক্রিয় মোবাইল নম্বর দিন</small>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">সঠিক ও সক্রিয় মোবাইল নম্বর দিন</small>
                             </div>
                             <div class="form-group">
                                 <label><i class="fa-solid fa-list"></i> আপনার প্রয়োজনীয় সেবা</label>
